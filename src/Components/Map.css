@@ -1,0 +1,19 @@
+.CanvasContainer {
+    height: 40vw;
+    background-color: #f0f0f0;
+    margin-top: 3vw;
+}
+
+.MyCanvas {
+    height: 100%;
+    width: 100%;
+    background-image: url('../Components/map.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity : 0.6;
+    transition: opacity 1s;
+}
+
+.MyCanvas:hover {
+    opacity: 1;
+}

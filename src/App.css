@@ -1,0 +1,12 @@
+body {
+    background: #f0f0f0;
+    min-height: 10vw;
+    min-width: 10vw;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
