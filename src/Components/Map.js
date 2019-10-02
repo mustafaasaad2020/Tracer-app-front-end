@@ -1,16 +1,20 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import "./Map.css";
 import LoadingScreen from 'react-loading-screen';
+import firebase from 'firebase';
+import { Config } from './config';
 
+ class Map extends Component {
 
-export default class Map extends Component {
-
-    constructor(props){
-        super(props);
+    constructor(props) {
+        super(props)
+        
+        this.map = firebase.initializeApp(Config);
+        this.db = this.map.database().ref().child('node-client');
         this.state = {
             location: {
-                x : 0,
-                y : 0
+                x: 0,
+                y: 0
             },
             canvasRef: React.createRef(),
             color: "red",
@@ -19,10 +23,10 @@ export default class Map extends Component {
 
     }
 
-    componentDidMount(oldProps){
+    componentDidMount(oldProps) {
         const canvas = this.state.canvasRef.current;
         const context = canvas.getContext('2d');
-        
+
         this.blinking = setInterval(
             () => this.blink(context, canvas), 200
         );
@@ -30,45 +34,61 @@ export default class Map extends Component {
         this.loaded = setInterval(
             () => this.load(), 3000
         );
-        
+
+
+        this.db.on('value', snapshot => {
+            this.setState({
+                location: snapshot.val(),
+               
+
+            });
+
+        });
+
+
     }
 
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         clearInterval(this.blinking)
+        this.db.off();
     }
+
 
     blink(context, canvas) {
-        if (this.state.color === "red"){
-        this.setState({color: "#f0f0f0"});
+        if (this.state.color === "red") {
+            this.setState({ color: "#f0f0f0" });
         } else {
-        this.setState({color: "red"});
+            this.setState({ color: "red" });
         }
-        context.clearRect(0,0,canvas.width,canvas.height);
+        context.clearRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
-        context.arc(40 /*x-Cordinates here*/, 80 /*y-Cordinates here*/, 1.5, 0, 2 * Math.PI);
+        context.arc(this.state.location.x /*x-Cordinates here*/, this.state.location.y /*y-Cordinates here*/, 1.5, 0, 2 * Math.PI);
         context.fillStyle = this.state.color;
         context.fill();
     }
 
-    load(){
-        this.setState({load: false});
+    load() {
+        this.setState({ load: false });
     }
 
 
-    render(){
+
+
+    render() {
 
         return (
 
             <LoadingScreen
-            loading={this.state.load}
-            bgColor='#f1f1f1'
-            spinnerColor='#5271FF'
-            textColor='#676767'
-            text='GO AWAY!!!'> 
-            <div className="CanvasContainer">
-            <canvas className="MyCanvas" ref={this.state.canvasRef} >
-            </canvas>
-            </div>
+                loading={this.state.load}
+                bgColor='#f1f1f1'
+                spinnerColor='#5271FF'
+                textColor='#676767'
+                text='GO AWAY!!!'>
+                <div className="CanvasContainer">
+                    <canvas className="MyCanvas" ref={this.state.canvasRef} >
+                    </canvas>
+                </div>
             </LoadingScreen>
         );
     }
@@ -76,3 +96,4 @@ export default class Map extends Component {
 
 
 }
+export default Map;
