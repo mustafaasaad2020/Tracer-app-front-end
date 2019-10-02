@@ -4,18 +4,19 @@ import LoadingScreen from 'react-loading-screen';
 import firebase from 'firebase';
 import { Config } from './config';
 
- class Map extends Component {
+class Map extends Component {
 
     constructor(props) {
         super(props)
-        
+
         this.map = firebase.initializeApp(Config);
         this.db = this.map.database().ref().child('node-client');
+
         this.state = {
-            location: {
-                x: 0,
-                y: 0
-            },
+
+            x: 0,
+            y: 0,
+
             canvasRef: React.createRef(),
             color: "red",
             load: true
@@ -36,14 +37,17 @@ import { Config } from './config';
         );
 
 
-        this.db.on('value', snapshot => {
+        this.db.on('child_changed', snapshot => {
             this.setState({
-                location: snapshot.val(),
-               
+                x: snapshot.child("x").val(),
+                y: snapshot.child("y").val(),
 
             });
 
         });
+
+
+
 
 
     }
@@ -63,7 +67,7 @@ import { Config } from './config';
         }
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
-        context.arc(this.state.location.x /*x-Cordinates here*/, this.state.location.y /*y-Cordinates here*/, 1.5, 0, 2 * Math.PI);
+        context.arc( (this.state.x/100)*300, (this.state.y/100)*150, 1.5, 0, 2 * Math.PI);
         context.fillStyle = this.state.color;
         context.fill();
     }
@@ -71,6 +75,9 @@ import { Config } from './config';
     load() {
         this.setState({ load: false });
     }
+
+
+
 
 
 
@@ -95,5 +102,10 @@ import { Config } from './config';
 
 
 
+
 }
+
+
+
+
 export default Map;
