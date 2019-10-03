@@ -67,7 +67,7 @@ class Map extends Component {
         }
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.beginPath();
-        context.arc( (this.state.x/100)*300, (this.state.y/100)*150, 1.5, 0, 2 * Math.PI);
+        context.arc( (this.state.x/100)*295, (this.state.y/100)*135, 1.5, 0, 2 * Math.PI);
         context.fillStyle = this.state.color;
         context.fill();
     }

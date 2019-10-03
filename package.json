@@ -4,18 +4,24 @@
   "private": true,
   "dependencies": {
     "array-unique": "^0.3.2",
+    "concurrently": "^4.1.2",
+    "electron": "^6.0.11",
+    "electron-builder": "^21.2.0",
+    "electron-is-dev": "^1.1.0",
     "firebase": "^7.0.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-konva": "^16.10.1-0",
     "react-loading-screen": "0.0.17",
-    "react-scripts": "3.1.2"
+    "react-scripts": "3.1.2",
+    "wait-on": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -31,5 +37,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "public/electron-start.js"
 }
